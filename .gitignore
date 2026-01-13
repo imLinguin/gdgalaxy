@@ -1,0 +1,5 @@
+*.so
+*.dblite
+*.os
+.godot
+bin

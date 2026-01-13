@@ -1,0 +1,21 @@
+[configuration]
+
+entry_symbol = "gdgalaxy_init"
+compatibility_minimum = "4.1"
+reloadable = true
+
+[libraries]
+macos.debug = "res:://bin/libgdgalaxy.macos.template_debug.framework"
+macos.release = "res:://bin/libgdgalaxy.macos.template_release.framework"
+linux.debug.x86_32 = "res:://bin/libgdgalaxy.linux.template_debug.x86_32.framework"
+linux.release.x86_32 = "res:://bin/libgdgalaxy.linux.template_release.x86_32.framework"
+linux.debug.x86_64 = "res:://bin/libgdgalaxy.linux.template_debug.x86_64.framework"
+linux.release.x86_64 = "res:://bin/libgdgalaxy.linux.template_release.x86_64.framework"
+windows.debug.x86_64 = "res:://bin/libgdgalaxy.windows.debug.x86_64.framework"
+windows.release.x86_64 = "res:://bin/libgdgalaxy.windows.template_release.x86_64.framework"
+
+[dependencies]
+linux.x86_32 = { "linux64/libGalaxy.so": "" }
+linux.x86_64 = { "linux64/libGalaxy64.so": "" }
+windows.x86_32 = { "win32/Galaxy.dll": "" }
+windows.x86_64 = { "win64/Galaxy64.so": "" }
