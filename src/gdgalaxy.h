@@ -20,6 +20,7 @@ class GDGalaxy : public Object,
   GDCLASS(GDGalaxy, Object)
 
 private:
+  bool is_init_called;
   bool is_init_success;
 
 protected:

@@ -26,8 +26,3 @@ func _init():
 
 func _process(_delta: float):
 	GDGalaxy.ProcessData()
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		GDGalaxy.Shutdown()
-		get_tree().quit()

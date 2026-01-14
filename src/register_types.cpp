@@ -28,6 +28,7 @@ void uninitialize_galaxy_module(ModuleInitializationLevel p_level) {
 	}
     Engine::get_singleton()->unregister_singleton("GDGalaxy");
     memdelete(Galaxy);
+	Galaxy = nullptr;
 }
 
 extern "C" {

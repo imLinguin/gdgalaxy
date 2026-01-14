@@ -7,10 +7,12 @@ using namespace godot;
 GDGalaxy *GDGalaxy::singleton = nullptr;
 
 GDGalaxy::GDGalaxy() {
+	is_init_called = false;
 	is_init_success = false;
 	singleton = this;
 }
 GDGalaxy::~GDGalaxy() {
+	if (is_init_called) Shutdown();
 	singleton = nullptr;
 }
 
@@ -32,7 +34,7 @@ void GDGalaxy::Init() {
     }
 
 	galaxy::api::Init({clientId.ascii(), clientSecret.ascii()});
-
+	is_init_called = true;
 	if (galaxy::api::GetError()) {
 		UtilityFunctions::printerr(galaxy::api::GetError()->GetMsg());
 	} else {
@@ -42,6 +44,7 @@ void GDGalaxy::Init() {
 
 void GDGalaxy::Shutdown() {
 	galaxy::api::Shutdown();
+	is_init_called = false;
 }
 
 void GDGalaxy::ProcessData() {
@@ -409,38 +412,38 @@ void GDGalaxy::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("on_leaderboard_score_update_failure", PropertyInfo(Variant::STRING, "name"), PropertyInfo(Variant::INT, "score"), PropertyInfo(Variant::INT, "reason")));
 
     // galaxy::api::IAuthListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_GALAXY_SERVICE_NOT_AVAILABLE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_GALAXY_SERVICE_NOT_AVAILABLE);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_CONNECTION_FAILURE);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_NO_LICENSE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_NO_LICENSE);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_INVALID_CREDENTIALS", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_INVALID_CREDENTIALS);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_GALAXY_NOT_INITIALIZED", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_GALAXY_NOT_INITIALIZED);
-	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "FAILURE_REASON_EXTERNAL_SERVICE_FAILURE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_EXTERNAL_SERVICE_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_UNDEFINED", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_GALAXY_SERVICE_NOT_AVAILABLE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_GALAXY_SERVICE_NOT_AVAILABLE);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_NO_LICENSE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_NO_LICENSE);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_INVALID_CREDENTIALS", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_INVALID_CREDENTIALS);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_GALAXY_NOT_INITIALIZED", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_GALAXY_NOT_INITIALIZED);
+	ClassDB::bind_integer_constant("GDGalaxy", "AuthFailureReason", "AUTH_FAILURE_REASON_EXTERNAL_SERVICE_FAILURE", galaxy::api::IAuthListener::FailureReason::FAILURE_REASON_EXTERNAL_SERVICE_FAILURE);
 
     // galaxy::api::IIsDlcOwnedListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN);
-	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_CONNECTION_FAILURE);
-	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "FAILURE_REASON_EXTERNAL_SERVICE_FAILURE", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_EXTERNAL_SERVICE_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "IS_DLC_OWNED_FAILURE_REASON_UNDEFINED", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "IS_DLC_OWNED_FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN);
+	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "IS_DLC_OWNED_FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "IsDlcOwnedFailureReason", "IS_DLC_OWNED_FAILURE_REASON_EXTERNAL_SERVICE_FAILURE", galaxy::api::IIsDlcOwnedListener::FAILURE_REASON_EXTERNAL_SERVICE_FAILURE);
 
   	// galaxy::api::IUserStatsAndAchievementsRetrieveListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "UserStatsAndAchievementsRetrieveFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::IUserStatsAndAchievementsRetrieveListener::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "UserStatsAndAchievementsRetrieveFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IUserStatsAndAchievementsRetrieveListener::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "UserStatsAndAchievementsRetrieveFailureReason", "ACHIEVEMENTS_RETRIEVE_FAILURE_REASON_UNDEFINED", galaxy::api::IUserStatsAndAchievementsRetrieveListener::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "UserStatsAndAchievementsRetrieveFailureReason", "ACHIEVEMENTS_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IUserStatsAndAchievementsRetrieveListener::FAILURE_REASON_CONNECTION_FAILURE);
 	// galaxy::api::IStatsAndAchievementsStoreListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "StatsAndAchievementsStoreFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::IStatsAndAchievementsStoreListener::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "StatsAndAchievementsStoreFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IStatsAndAchievementsStoreListener::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "StatsAndAchievementsStoreFailureReason", "ACHIEVEMENTS_STORE_FAILURE_REASON_UNDEFINED", galaxy::api::IStatsAndAchievementsStoreListener::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "StatsAndAchievementsStoreFailureReason", "ACHIEVEMENTS_STOREFAILURE_REASON_CONNECTION_FAILURE", galaxy::api::IStatsAndAchievementsStoreListener::FAILURE_REASON_CONNECTION_FAILURE);
 	// galaxy::api::ILeaderboardsRetrieveListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardsRetrieveFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::ILeaderboardsRetrieveListener::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardsRetrieveFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::ILeaderboardsRetrieveListener::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardsRetrieveFailureReason", "LEADERBOARDS_RETRIEVE_FAILURE_REASON_UNDEFINED", galaxy::api::ILeaderboardsRetrieveListener::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardsRetrieveFailureReason", "LEADERBOARDS_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::ILeaderboardsRetrieveListener::FAILURE_REASON_CONNECTION_FAILURE);
 	// galaxy::api::ILeaderboardEntriesRetrieveListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardEntriesRetrieveFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::ILeaderboardEntriesRetrieveListener::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardEntriesRetrieveFailureReason", "FAILURE_REASON_NOT_FOUND", galaxy::api::ILeaderboardEntriesRetrieveListener::FAILURE_REASON_NOT_FOUND);
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardEntriesRetrieveFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::ILeaderboardEntriesRetrieveListener::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardEntriesRetrieveFailureReason", "LEADERBOARD_RETRIEVE_FAILURE_REASON_UNDEFINED", galaxy::api::ILeaderboardEntriesRetrieveListener::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardEntriesRetrieveFailureReason", "LEADERBOARD_RETRIEVE_FAILURE_REASON_NOT_FOUND", galaxy::api::ILeaderboardEntriesRetrieveListener::FAILURE_REASON_NOT_FOUND);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardEntriesRetrieveFailureReason", "LEADERBOARD_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::ILeaderboardEntriesRetrieveListener::FAILURE_REASON_CONNECTION_FAILURE);
     // galaxy::api::ILeaderboardScoreUpdateListener::FailureReason
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardScoreUpdateFailureReason", "FAILURE_REASON_UNDEFINED", galaxy::api::ILeaderboardScoreUpdateListener::FAILURE_REASON_UNDEFINED);
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardScoreUpdateFailureReason", "FAILURE_REASON_NO_IMPROVEMENT", galaxy::api::ILeaderboardScoreUpdateListener::FAILURE_REASON_NO_IMPROVEMENT);
-	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardScoreUpdateFailureReason", "FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::ILeaderboardScoreUpdateListener::FAILURE_REASON_CONNECTION_FAILURE);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardScoreUpdateFailureReason", "LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_UNDEFINED", galaxy::api::ILeaderboardScoreUpdateListener::FAILURE_REASON_UNDEFINED);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardScoreUpdateFailureReason", "LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_NO_IMPROVEMENT", galaxy::api::ILeaderboardScoreUpdateListener::FAILURE_REASON_NO_IMPROVEMENT);
+	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardScoreUpdateFailureReason", "LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_CONNECTION_FAILURE", galaxy::api::ILeaderboardScoreUpdateListener::FAILURE_REASON_CONNECTION_FAILURE);
 
 	// galaxy::api::LeaderboardSortMethod
 	ClassDB::bind_integer_constant("GDGalaxy", "LeaderboardSortMethod", "LEADERBOARD_SORT_METHOD_NONE", galaxy::api::LeaderboardSortMethod::LEADERBOARD_SORT_METHOD_NONE);
