@@ -15,7 +15,7 @@ in order to link the extension against libraries and to provide header files.
 
 Place both `Include` and binaries into appropriate directories in `Libraries`
 
-Right now SConstruct is configured to output the extension library directly into the demo Godot project, and doesnt yet copy needed libraries there, as well asthe .gdextension manifest.
+Right now SConstruct is configured to output the extension library directly into the demo Godot project, and doesnt yet copy needed libraries there, as well as the .gdextension manifest.
 
 Build:
 
