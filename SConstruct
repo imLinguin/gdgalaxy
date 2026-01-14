@@ -13,7 +13,24 @@ env = SConscript("godot-cpp/SConstruct")
 # - LINKFLAGS are for linking flags
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-env.Append(CPPPATH=["src/"])
+
+galaxy_lib_path = "sdk/Libraries"
+if env["platform"] == "macos":
+    galaxy_lib_path += "/osx"
+    libs = ["libGalaxy.dylib", "libGalaxyPeer64.dylib"]
+elif env["platform"] == "windows":
+    galaxy_lib_path += "/win64" if env["arch"] == "x86_64" else "/win32"
+    libs = ["Galaxy64.dll" if env["arch"] == "x86_64" else "Galaxy.dll"]
+elif env["platform"] == "linux":
+    galaxy_lib_path += "/linux64" if env["arch"] == "x86_64" else "/linux32"
+    libs = ["libGalaxy64.so" if env["arch"] == "x86_64" else "libGalaxy.so"]
+
+libs = [lib.replace(".dll", "") for lib in libs]
+
+env.Append(LIBPATH=[galaxy_lib_path])
+env.Append(CPPPATH=["src/", "sdk/Include"])
+env.Append(LIBS=libs)
+
 sources = Glob("src/*.cpp")
 
 if env["platform"] == "macos":
@@ -23,17 +40,6 @@ if env["platform"] == "macos":
         ),
         source=sources,
     )
-elif env["platform"] == "ios":
-    if env["ios_simulator"]:
-        library = env.StaticLibrary(
-            "demo/bin/libgdgalaxy.{}.{}.simulator.a".format(env["platform"], env["target"]),
-            source=sources,
-        )
-    else:
-        library = env.StaticLibrary(
-            "demo/bin/libgdgalaxy.{}.{}.a".format(env["platform"], env["target"]),
-            source=sources,
-        )
 else:
     library = env.SharedLibrary(
         "demo/bin/libgdgalaxy{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),

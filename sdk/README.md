@@ -1,0 +1,1 @@
+Place your `Include` directory and binaries to respectable `Libraries` directories

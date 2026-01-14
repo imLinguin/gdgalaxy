@@ -15,17 +15,18 @@ void initialize_galaxy_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_CORE) {
 		return;
 	}
-
-    Galaxy = memnew(GDGalaxy);
-    Engine::get_singleton()->register_singleton("Galaxy", GDGalaxy::get_singleton());
 	GDREGISTER_CLASS(GDGalaxy);
+    Galaxy = memnew(GDGalaxy);
+    Engine::get_singleton()->register_singleton("GDGalaxy", GDGalaxy::get_singleton());
+
+    GalaxyProjectSettings::register_settings();
 }
 
 void uninitialize_galaxy_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_CORE) {
 		return;
 	}
-    Engine::get_singleton()->unregister_singleton("Galaxy");
+    Engine::get_singleton()->unregister_singleton("GDGalaxy");
     memdelete(Galaxy);
 }
 

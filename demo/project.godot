@@ -11,5 +11,12 @@ config_version=5
 [application]
 
 config/name="Galaxy Demo"
+run/main_scene="uid://cbyjc2kmppvx5"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[galaxy]
+
+initialization/client_id="50225266424144145"
+initialization/client_secret="45955f1104f99b625a5733fa1848479b43d63bdb98f0929e37c9affaf900e99f"
+initialization/init_timeout=5
