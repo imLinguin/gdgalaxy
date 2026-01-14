@@ -30,6 +30,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           submodules: recursive
+      - name: Install multilib
+        if: ${{runner.os == 'Linux'}}
+        run: sudo apt install gcc-multilib g++-multilib
       - name: Install scons
         run: pip install scons
       - name: Extract SDK
