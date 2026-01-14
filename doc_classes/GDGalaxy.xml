@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GDGalaxy" inherits="Object" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="ClearAchievement">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="FindLeaderboard">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="FindOrCreateLeaderboard">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="displayName" type="String" />
+			<param index="2" name="sortMethod" type="int" />
+			<param index="3" name="displayType" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="GetAchievement">
+			<return type="Dictionary" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetAchievementDescription">
+			<return type="String" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetAchievementDisplayName">
+			<return type="String" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetCurrentGameLanguage">
+			<return type="String" />
+			<param index="0" name="product_id" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="GetCurrentGameLanguageCode">
+			<return type="String" />
+			<param index="0" name="product_id" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="GetLeaderboardDisplayName">
+			<return type="String" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetLeaderboardDisplayType">
+			<return type="int" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetLeaderboardEntryCount">
+			<return type="int" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetLeaderboardSortMethod">
+			<return type="int" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetRequestedLeaderboardEntry">
+			<return type="Dictionary" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="GetRequestedLeaderboardEntryWithDetails">
+			<return type="Dictionary" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="GetStatFloat">
+			<return type="float" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetStatInt">
+			<return type="int" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="GetUserTimePlayed">
+			<return type="int" />
+			<param index="0" name="userID" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="Init">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="IsAchievementVisible">
+			<return type="bool" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="IsAchievementVisibleWhileLocked">
+			<return type="bool" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="IsDlcInstalled">
+			<return type="bool" />
+			<param index="0" name="product_id" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ProcessData">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="RequestLeaderboardEntriesArroundUser">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="countBefore" type="int" />
+			<param index="2" name="countAfter" type="int" />
+			<param index="3" name="userId" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="RequestLeaderboardEntriesForUsers">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="userIds" type="PackedInt64Array" />
+			<description>
+			</description>
+		</method>
+		<method name="RequestLeaderboardEntriesGlobal">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="rangeStart" type="int" />
+			<param index="2" name="rangeEnd" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="RequestLeaderboards">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="RequestUserStatsAndAchievements">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="RequestUserTimePlayed">
+			<return type="void" />
+			<param index="0" name="userID" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ResetStatsAndAchievements">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="SetLeaderboardScore">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="score" type="int" />
+			<param index="2" name="forceUpdate" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="SetLeaderboardScoreWithDetails">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="score" type="int" />
+			<param index="2" name="details" type="PackedByteArray" />
+			<param index="3" name="forceUpdate" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="SetStatFloat">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="SetStatInt">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="Shutdown">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="SignInGalaxy">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="StoreStatsAndAchievements">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="UpdateAvgRateStat">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="countThisSession" type="float" />
+			<param index="2" name="sessionLength" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<signals>
+		<signal name="on_auth_failure">
+			<param index="0" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_auth_lost">
+			<description>
+			</description>
+		</signal>
+		<signal name="on_auth_success">
+			<description>
+			</description>
+		</signal>
+		<signal name="on_dlc_check_failure">
+			<param index="0" name="productId" type="int" />
+			<param index="1" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_dlc_check_success">
+			<param index="0" name="productId" type="int" />
+			<param index="1" name="isOwned" type="bool" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboard_entries_retrieve_failure">
+			<param index="0" name="name" type="String" />
+			<param index="1" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboard_entries_retrieve_success">
+			<param index="0" name="name" type="String" />
+			<param index="1" name="entriesCount" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboard_retrieve_failure">
+			<param index="0" name="name" type="String" />
+			<param index="1" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboard_retrieve_success">
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboard_score_update_failure">
+			<param index="0" name="name" type="String" />
+			<param index="1" name="score" type="int" />
+			<param index="2" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboard_score_update_success">
+			<param index="0" name="name" type="String" />
+			<param index="1" name="score" type="int" />
+			<param index="2" name="oldRank" type="int" />
+			<param index="3" name="newRank" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboards_retrieve_failure">
+			<param index="0" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_leaderboards_retrieve_success">
+			<description>
+			</description>
+		</signal>
+		<signal name="on_stats_and_achievements_store_failure">
+			<param index="0" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_stats_and_achievements_store_success">
+			<description>
+			</description>
+		</signal>
+		<signal name="on_user_stats_and_achievements_retrieve_failure">
+			<param index="0" name="userID" type="int" />
+			<param index="1" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_user_stats_and_achievements_retrieve_success">
+			<param index="0" name="userID" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_user_time_played_retrieve_failure">
+			<param index="0" name="userID" type="int" />
+			<param index="1" name="reason" type="int" />
+			<description>
+			</description>
+		</signal>
+		<signal name="on_user_time_played_retrieve_success">
+			<param index="0" name="userID" type="int" />
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="AUTH_FAILURE_REASON_UNDEFINED" value="0" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_GALAXY_SERVICE_NOT_AVAILABLE" value="1" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN" value="2" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_CONNECTION_FAILURE" value="3" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_NO_LICENSE" value="4" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_INVALID_CREDENTIALS" value="5" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_GALAXY_NOT_INITIALIZED" value="6" enum="AuthFailureReason">
+		</constant>
+		<constant name="AUTH_FAILURE_REASON_EXTERNAL_SERVICE_FAILURE" value="7" enum="AuthFailureReason">
+		</constant>
+		<constant name="IS_DLC_OWNED_FAILURE_REASON_UNDEFINED" value="0" enum="IsDlcOwnedFailureReason">
+		</constant>
+		<constant name="IS_DLC_OWNED_FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN" value="1" enum="IsDlcOwnedFailureReason">
+		</constant>
+		<constant name="IS_DLC_OWNED_FAILURE_REASON_CONNECTION_FAILURE" value="2" enum="IsDlcOwnedFailureReason">
+		</constant>
+		<constant name="IS_DLC_OWNED_FAILURE_REASON_EXTERNAL_SERVICE_FAILURE" value="3" enum="IsDlcOwnedFailureReason">
+		</constant>
+		<constant name="ACHIEVEMENTS_RETRIEVE_FAILURE_REASON_UNDEFINED" value="0" enum="UserStatsAndAchievementsRetrieveFailureReason">
+		</constant>
+		<constant name="ACHIEVEMENTS_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE" value="1" enum="UserStatsAndAchievementsRetrieveFailureReason">
+		</constant>
+		<constant name="ACHIEVEMENTS_STORE_FAILURE_REASON_UNDEFINED" value="0" enum="StatsAndAchievementsStoreFailureReason">
+		</constant>
+		<constant name="ACHIEVEMENTS_STOREFAILURE_REASON_CONNECTION_FAILURE" value="1" enum="StatsAndAchievementsStoreFailureReason">
+		</constant>
+		<constant name="LEADERBOARDS_RETRIEVE_FAILURE_REASON_UNDEFINED" value="0" enum="LeaderboardsRetrieveFailureReason">
+		</constant>
+		<constant name="LEADERBOARDS_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE" value="1" enum="LeaderboardsRetrieveFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_RETRIEVE_FAILURE_REASON_UNDEFINED" value="0" enum="LeaderboardEntriesRetrieveFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_RETRIEVE_FAILURE_REASON_NOT_FOUND" value="1" enum="LeaderboardEntriesRetrieveFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE" value="2" enum="LeaderboardEntriesRetrieveFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_UNDEFINED" value="0" enum="LeaderboardScoreUpdateFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_NO_IMPROVEMENT" value="1" enum="LeaderboardScoreUpdateFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_CONNECTION_FAILURE" value="2" enum="LeaderboardScoreUpdateFailureReason">
+		</constant>
+		<constant name="LEADERBOARD_SORT_METHOD_NONE" value="0" enum="LeaderboardSortMethod">
+		</constant>
+		<constant name="LEADERBOARD_SORT_METHOD_ASCENDING" value="1" enum="LeaderboardSortMethod">
+		</constant>
+		<constant name="LEADERBOARD_SORT_METHOD_DESCENDING" value="2" enum="LeaderboardSortMethod">
+		</constant>
+		<constant name="LEADERBOARD_DISPLAY_TYPE_NONE" value="0" enum="LeaderboardDisplayType">
+		</constant>
+		<constant name="LEADERBOARD_DISPLAY_TYPE_NUMBER" value="1" enum="LeaderboardDisplayType">
+		</constant>
+		<constant name="LEADERBOARD_DISPLAY_TYPE_TIME_MILLISECONDS" value="3" enum="LeaderboardDisplayType">
+		</constant>
+		<constant name="LEADERBOARD_DISPLAY_TYPE_TIME_SECONDS" value="2" enum="LeaderboardDisplayType">
+		</constant>
+	</constants>
+</class>

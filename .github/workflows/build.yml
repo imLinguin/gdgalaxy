@@ -1,0 +1,80 @@
+name: Build GDExtension
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            targets: x86_32 x86_64
+            platform: linux
+            dir: linux
+          - os: macos-latest
+            targets: arm64 x86_64
+            platform: macos
+            dir: osx
+          - os: windows-latest
+            targets: x86_32 x86_64
+            platform: windows
+            dir: windows
+
+    runs-on: ${{matrix.os}}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Install scons
+        run: pip install scons
+      - name: Extract SDK
+        run: echo "Downloading the SDK is not done yet"
+      - name: Compile builds
+        run: |
+          for t in ${{matrix.targets}}; do
+            echo "Building $t"
+            scons platform=${{matrix.platform}} "arch=$t" target=template_debug
+            scons platform=${{matrix.platform}} "arch=$t" target=template_release
+          done
+
+      - name: Copy SDK binaries
+        run: for dir in $(ls -d sdk/Libraries/${{matrix.dir}}*/); do x=$(basename "$dir"); cp $dir/*so addons/gdgalaxy/"$x"; done
+
+      - name: Prepare artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: gdgalaxy-${{matrix.platform}}
+          path: addons/gdgalaxy/${{matrix.dir}}*
+
+  bundle:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - uses: actions/download-artifact@v6
+        with:
+          name: gdgalaxy-linux
+          path: addons/gdgalaxy
+      - uses: actions/download-artifact@v6
+        with:
+          name: gdgalaxy-macos
+          path: addons/gdgalaxy
+      - uses: actions/download-artifact@v6
+        with:
+          name: gdgalaxy-windows
+          path: addons/gdgalaxy
+      
+      - name: Copy license and README
+        run: cp LICENSE.md README.md addons/gdgalaxy
+      
+      - name: Release artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: gdgalaxy
+          path: addons

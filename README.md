@@ -13,7 +13,7 @@ WIP
 Building the extension locally requires you to be able to access https://devportal.gog.com/
 in order to link the extension against libraries and to provide header files.
 
-Place both `Include` and binaries into appropriate directories in `Libraries`
+Place binaries into appropriate directories in `Libraries` together with `Include` into `sdk` directory
 
 Right now SConstruct is configured to output the extension library directly into the demo Godot project, and doesnt yet copy needed libraries there, as well as the .gdextension manifest.
 
