@@ -38,6 +38,7 @@ jobs:
       - name: Extract SDK
         run: echo "Downloading the SDK is not done yet"
       - name: Compile builds
+        shell: bash
         run: |
           for t in ${{matrix.targets}}; do
             echo "Building $t"
@@ -46,7 +47,8 @@ jobs:
           done
 
       - name: Copy SDK binaries
-        run: for dir in $(ls -d sdk/Libraries/${{matrix.dir}}*/); do x=$(basename "$dir"); cp $dir/*so addons/gdgalaxy/"$x"; done
+        shell: bash
+        run: for dir in sdk/Libraries/${{matrix.dir}}*/; do x=$(basename "$dir"); cp "$dir"/*.so addons/gdgalaxy/"$x"; done
 
       - name: Prepare artifact
         uses: actions/upload-artifact@v6
