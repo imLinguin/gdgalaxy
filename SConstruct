@@ -20,7 +20,6 @@ arch_path = "osx"
 libs = ["Galaxy64" if env["arch"] == "x86_64" else "Galaxy"]
 if env["platform"] == "macos":
     arch_path = "osx"
-    libs = ["Galaxy"]
 elif env["platform"] == "windows":
     arch_path = "win64" if env["arch"] == "x86_64" else "win32"
 elif env["platform"] == "linux":

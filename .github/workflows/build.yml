@@ -13,13 +13,13 @@ jobs:
             platform: linux
             dir: linux
           - os: macos-latest
-            targets: arm64 x86_64
+            targets: universal
             platform: macos
             dir: osx
           - os: windows-latest
             targets: x86_32 x86_64
             platform: windows
-            dir: windows
+            dir: win
 
     runs-on: ${{matrix.os}}
     steps:
@@ -50,7 +50,7 @@ jobs:
 
       - name: Copy SDK binaries
         shell: bash
-        run: for dir in sdk/Libraries/${{matrix.dir}}*/; do x=$(basename "$dir"); cp "$dir"/*.{so,dll,framework} addons/gdgalaxy/"$x" || true; done
+        run: for dir in sdk/Libraries/${{matrix.dir}}*/; do x=$(basename "$dir"); cp "$dir"/*.{so,dll,dylib} addons/gdgalaxy/"$x" || true; done
 
       - name: Prepare artifact
         uses: actions/upload-artifact@v6
