@@ -17,7 +17,7 @@ windows.debug.x86_64 = "res://addons/gdgalaxy/win64/libgdgalaxy.windows.template
 windows.release.x86_64 = "res://addons/gdgalaxy/win64/libgdgalaxy.windows.template_release.x86_64.dll"
 
 [dependencies]
-macos.universal = { "res://addons/gdgalaxy/osx/libGalaxy.dylib": "", "res://addons/gdgalaxy/osx/libGalaxyPeer64.dylib": "" }
+macos.universal = { "res://addons/gdgalaxy/osx/libGalaxy.dylib": "" }
 linux.x86_32 = { "res://addons/gdgalaxy/linux64/libGalaxy.so": "" }
 linux.x86_64 = { "res://addons/gdgalaxy/linux64/libGalaxy64.so": "" }
 windows.x86_32 = { "res://addons/gdgalaxy/win32/Galaxy.dll": "" }
