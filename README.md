@@ -1,7 +1,9 @@
-# GDGalaxy
-
-GDExtension arround Galaxy SDK.  
-This enables usage of GOG Galaxy SDK into Godot games without need to recompile it together with the engine.
+<p align="center"><img width="128" src="assets/icon.png" /></p>
+<h1 align="center">GDGalaxy</h1>
+<p align="center">
+GDExtension arround Galaxy SDK.<br/>
+This enables usage of GOG Galaxy SDK in Godot games without need to recompile the engine.
+</p>
 
 ## Usage
 
