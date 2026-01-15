@@ -179,11 +179,12 @@ void GDGalaxy::RequestLeaderboardEntriesArroundUser(String name, uint32_t countB
 }
 
 void GDGalaxy::RequestLeaderboardEntriesForUsers(String name, const PackedInt64Array userIds) {
-	galaxy::api::GalaxyID ids[userIds.size()];
+	std::vector<galaxy::api::GalaxyID> ids;
+	ids.reserve(userIds.size());
 	for (int i = 0; i < userIds.size(); i++) {
-		ids[i] = galaxy::api::GalaxyID(userIds[i]);
+		ids.push_back(galaxy::api::GalaxyID(userIds[i]));
 	}
-	galaxy::api::Stats()->RequestLeaderboardEntriesForUsers(name.utf8(), ids, userIds.size(), this);
+	galaxy::api::Stats()->RequestLeaderboardEntriesForUsers(name.utf8(), ids.data(), userIds.size(), this);
 }
 
 Dictionary GDGalaxy::GetRequestedLeaderboardEntry(uint32_t index) {
