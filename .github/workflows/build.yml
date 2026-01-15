@@ -50,7 +50,7 @@ jobs:
 
       - name: Copy SDK binaries
         shell: bash
-        run: for dir in sdk/Libraries/${{matrix.dir}}*/; do x=$(basename "$dir"); cp "$dir"/*.so addons/gdgalaxy/"$x"; done
+        run: for dir in sdk/Libraries/${{matrix.dir}}*/; do x=$(basename "$dir"); cp "$dir"/*.{so,dll,framework} addons/gdgalaxy/"$x" || true; done
 
       - name: Prepare artifact
         uses: actions/upload-artifact@v6
