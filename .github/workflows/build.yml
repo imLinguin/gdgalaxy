@@ -36,7 +36,12 @@ jobs:
       - name: Install scons
         run: pip install scons
       - name: Extract SDK
-        run: echo "Downloading the SDK is not done yet"
+        run: |
+          aws s3 cp "${{ secrets.AWS_S3_BUCKET }}" sdk.tar.gz
+          tar xzf sdk.tar.gz -C sdk
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Compile builds
         shell: bash
         run: |
