@@ -59,6 +59,8 @@ jobs:
           path: addons/gdgalaxy/${{matrix.dir}}*
 
   bundle:
+    permissions:
+      contents: write
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -80,8 +82,18 @@ jobs:
       - name: Copy license and README
         run: cp LICENSE.md README.md addons/gdgalaxy
       
-      - name: Release artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gdgalaxy
+          name: gdgalaxy-${{github.ref_name}}-${{github.run_id}}
           path: addons
+
+      - name: Create release zip archive
+        if: github.ref_type == 'tag'
+        run: zip -r "gdgalaxy-${{github.ref_name}}.zip" addons/*
+      - name: Draft release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: "gdgalaxy-${{github.ref_name}}.zip"
