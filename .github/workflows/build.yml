@@ -36,7 +36,6 @@ jobs:
       - name: Get godot-cpp hash
         id: godotcpp-hash
         run: echo "hash=$(git submodule | awk '/godot-cpp/ { print $1 }')" >> $GITHUB_OUTPUT
-        working-directory: godot-cpp
 
       - name: Cache godot-sdk builds
         uses: actions/cache@v5
