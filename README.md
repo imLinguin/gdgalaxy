@@ -11,6 +11,11 @@ Supported Godot version: 4.1+
 GOG SDK overview: https://docs.gog.com/sdk/  
 Detailed SDK documentation: https://docs.gog.com/galaxyapi/  
 
+Supported platforms:
+- Linux - x86_32, x86_64
+- Mac - arm64, x86_64
+- Windows - x86_32, x86_64
+
 Currently covered interfaces are:
 - IApps
     - Game language
@@ -23,10 +28,19 @@ Currently covered interfaces are:
 > [!NOTE]
 > Need anything else? Create an issue and let me know.
 
-### Example
+### Initial setup
+
+Make sure to first setup your project with clientId and clientSecret values you get from GOG.
+
+`Project > Project Settings > Galaxy > Initialization`
+
+<img width="1481" height="876" alt="image" src="https://github.com/user-attachments/assets/149066d1-fa8d-4d39-b3c9-96ebf843e12a" />
+
+### Code example
 
 In order to connect with Galaxy you should call `Init()` and `SignInGalaxy()`  
 note that in case `SignInGalaxy()` fails - `on_auth_failure` signal is emitted, the game should proceed as normal 
+Make sure to call `GDGalaxy.ProcessData()` every frame.
 
 ```gd
 extends Node
