@@ -54,6 +54,22 @@ void GDGalaxy::ProcessData() {
 	galaxy::api::ProcessData();
 }
 
+Dictionary GDGalaxy::GetError() {
+	Dictionary error;
+
+	error["msg"] = String();
+	error["name"] = String();
+	error["type"] = 0;
+	error["is_error"] = galaxy::api::GetError() != nullptr;
+	
+	if (galaxy::api::GetError()) {
+		error["msg"] = String(galaxy::api::GetError()->GetMsg());
+		error["name"] = String(galaxy::api::GetError()->GetName());
+		error["type"] = galaxy::api::GetError()->GetType();
+	}
+	return error;
+}
+
 void GDGalaxy::SignInGalaxy(){
 	GDGALAXY_REQUIRE_INTERFACE(User);
 	uint32_t timeout = GalaxyProjectSettings::get_init_timeout();
@@ -397,6 +413,7 @@ void GDGalaxy::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("Init"), &GDGalaxy::Init);
 	ClassDB::bind_method(D_METHOD("ProcessData"), &GDGalaxy::ProcessData);
 	ClassDB::bind_method(D_METHOD("Shutdown"), &GDGalaxy::Shutdown);
+	ClassDB::bind_method(D_METHOD("GetError"), &GDGalaxy::GetError);
 
     // galaxy::api::User
 	ClassDB::bind_method(D_METHOD("SignInGalaxy"), &GDGalaxy::SignInGalaxy);

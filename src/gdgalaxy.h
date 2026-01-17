@@ -51,6 +51,7 @@ public:
   bool Init();
   void ProcessData();
   void Shutdown();
+  Dictionary GetError();
 
   // galaxy::api::User
   bool SignedIn();
