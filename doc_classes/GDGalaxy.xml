@@ -58,6 +58,16 @@
 			<description>
 			</description>
 		</method>
+		<method name="GetError">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="GetGalaxyID">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="GetLeaderboardDisplayName">
 			<return type="String" />
 			<param index="0" name="name" type="String" />
@@ -113,7 +123,7 @@
 			</description>
 		</method>
 		<method name="Init">
-			<return type="void" />
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
@@ -135,6 +145,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="IsLoggedOn">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="ProcessData">
 			<return type="void" />
 			<description>
@@ -152,7 +167,7 @@
 		<method name="RequestLeaderboardEntriesForUsers">
 			<return type="void" />
 			<param index="0" name="name" type="String" />
-			<param index="1" name="userIds" type="PackedInt64Array" />
+			<param index="1" name="userIds" type="int[]" />
 			<description>
 			</description>
 		</method>
@@ -222,6 +237,16 @@
 			</description>
 		</method>
 		<method name="SignInGalaxy">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="SignedIn">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="SignedOut">
 			<return type="void" />
 			<description>
 			</description>
