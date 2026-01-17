@@ -57,6 +57,7 @@ public:
   void SignOut();
   bool IsLoggedOn();
   void SignInGalaxy();
+  uint64_t GetGalaxyID();
 
   // galaxy::api::Apps
   String GetCurrentGameLanguage(galaxy::api::ProductID product = 0);
@@ -87,8 +88,8 @@ public:
   uint8_t GetLeaderboardSortMethod(String name);
   uint8_t GetLeaderboardDisplayType(String name);
   void RequestLeaderboardEntriesGlobal(String name, uint32_t rangeStart, uint32_t rangeEnd);
-  void RequestLeaderboardEntriesArroundUser(String name, uint32_t countBefore, uint32_t countAfter, int64_t userId = 0);
-  void RequestLeaderboardEntriesForUsers(String name, const PackedInt64Array userIds);
+  void RequestLeaderboardEntriesArroundUser(String name, uint32_t countBefore, uint32_t countAfter, uint64_t userId = 0);
+  void RequestLeaderboardEntriesForUsers(String name, const TypedArray<uint64_t> userIds);
   Dictionary GetRequestedLeaderboardEntry(uint32_t index);
   Dictionary GetRequestedLeaderboardEntryWithDetails(uint32_t index);
   void SetLeaderboardScore(String name, int32_t score, bool forceUpdate=false);
@@ -96,8 +97,8 @@ public:
   uint32_t GetLeaderboardEntryCount(String name);
   void FindLeaderboard(String name);
   void FindOrCreateLeaderboard(String name, String displayName, uint8_t sortMethod, uint8_t displayType);
-  void RequestUserTimePlayed(int64_t userID = 0);
-  uint32_t GetUserTimePlayed(int64_t userID = 0);
+  void RequestUserTimePlayed(uint64_t userID = 0);
+  uint32_t GetUserTimePlayed(uint64_t userID = 0);
   
   // galaxy::api::IAuthListener
   void OnAuthSuccess() override;

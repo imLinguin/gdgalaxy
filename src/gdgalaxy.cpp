@@ -75,6 +75,11 @@ void GDGalaxy::SignOut() {
 	galaxy::api::User()->SignOut();
 }
 
+uint64_t GDGalaxy::GetGalaxyID() {
+	GDGALAXY_REQUIRE_INTERFACE_RET(User, 0);
+	return galaxy::api::User()->GetGalaxyID().ToUint64();
+}
+
 String GDGalaxy::GetCurrentGameLanguage(galaxy::api::ProductID product) {
 	GDGALAXY_REQUIRE_INTERFACE_RET(Apps, String());
 	const char* language = galaxy::api::Apps()->GetCurrentGameLanguage();
@@ -218,12 +223,12 @@ void GDGalaxy::RequestLeaderboardEntriesGlobal(String name, uint32_t rangeStart,
 	galaxy::api::Stats()->RequestLeaderboardEntriesGlobal(name.utf8(), rangeStart, rangeEnd, this);
 }
 
-void GDGalaxy::RequestLeaderboardEntriesArroundUser(String name, uint32_t countBefore, uint32_t countAfter, int64_t userId) {
+void GDGalaxy::RequestLeaderboardEntriesArroundUser(String name, uint32_t countBefore, uint32_t countAfter, uint64_t userId) {
 	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestLeaderboardEntriesAroundUser(name.utf8(), countBefore, countAfter, galaxy::api::GalaxyID(userId), this);
 }
 
-void GDGalaxy::RequestLeaderboardEntriesForUsers(String name, const PackedInt64Array userIds) {
+void GDGalaxy::RequestLeaderboardEntriesForUsers(String name, const TypedArray<uint64_t> userIds) {
 	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	std::vector<galaxy::api::GalaxyID> ids;
 	ids.reserve(userIds.size());
@@ -284,6 +289,7 @@ void GDGalaxy::SetLeaderboardScoreWithDetails(String name, int32_t score, Packed
 }
 
 uint32_t GDGalaxy::GetLeaderboardEntryCount(String name){
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, 0);
 	return galaxy::api::Stats()->GetLeaderboardEntryCount(name.utf8());
 }
 
@@ -299,12 +305,12 @@ void GDGalaxy::FindOrCreateLeaderboard(String name, String displayName, uint8_t 
 	galaxy::api::Stats()->FindOrCreateLeaderboard(name.utf8(), displayName.utf8(), leaderboardSortMethod, leaderboardDisplayType, this);
 }
 
-void GDGalaxy::RequestUserTimePlayed(int64_t userID) {
+void GDGalaxy::RequestUserTimePlayed(uint64_t userID) {
 	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestUserTimePlayed(galaxy::api::GalaxyID(userID), this);
 }
 
-uint32_t GDGalaxy::GetUserTimePlayed(int64_t userID) {
+uint32_t GDGalaxy::GetUserTimePlayed(uint64_t userID) {
 	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, 0);
 	return galaxy::api::Stats()->GetUserTimePlayed(galaxy::api::GalaxyID(userID));
 }
@@ -397,6 +403,7 @@ void GDGalaxy::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("SignedIn"), &GDGalaxy::SignedIn);
 	ClassDB::bind_method(D_METHOD("SignedOut"), &GDGalaxy::SignOut);
 	ClassDB::bind_method(D_METHOD("IsLoggedOn"), &GDGalaxy::IsLoggedOn);
+	ClassDB::bind_method(D_METHOD("GetGalaxyID"), &GDGalaxy::GetGalaxyID);
 
     // galaxy::api::Apps
 	ClassDB::bind_method(D_METHOD("GetCurrentGameLanguage", "product_id"), &GDGalaxy::GetCurrentGameLanguage, DEFVAL(0));
