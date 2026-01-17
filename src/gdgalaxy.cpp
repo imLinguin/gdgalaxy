@@ -20,17 +20,18 @@ GDGalaxy *GDGalaxy::get_singleton() {
 	return singleton;
 }
 
-void GDGalaxy::Init() {
+bool GDGalaxy::Init() {
 	String clientId = GalaxyProjectSettings::get_client_id();
 	String clientSecret = GalaxyProjectSettings::get_client_secret();
+	is_init_success = false;
 
 	if (clientId.is_empty()) {
         UtilityFunctions::printerr("Galaxy client id is not configured in project settings!\n");
-        return;
+        return is_init_success;
     }
 	if (clientSecret.is_empty()) {
         UtilityFunctions::printerr("Galaxy client secret is not configured in project settings!\n");
-        return;
+        return is_init_success;
     }
 
 	galaxy::api::Init({clientId.ascii(), clientSecret.ascii()});
@@ -40,6 +41,8 @@ void GDGalaxy::Init() {
 	} else {
 		is_init_success = true;
 	}
+
+	return is_init_success;
 }
 
 void GDGalaxy::Shutdown() {
@@ -52,21 +55,40 @@ void GDGalaxy::ProcessData() {
 }
 
 void GDGalaxy::SignInGalaxy(){
+	GDGALAXY_REQUIRE_INTERFACE(User);
 	uint32_t timeout = GalaxyProjectSettings::get_init_timeout();
 	galaxy::api::User()->SignInGalaxy(false, timeout, this);
 }
 
+bool GDGalaxy::SignedIn() {
+	GDGALAXY_REQUIRE_INTERFACE_RET(User, false);
+	return galaxy::api::User()->SignedIn();
+}
+
+bool GDGalaxy::IsLoggedOn() {
+	GDGALAXY_REQUIRE_INTERFACE_RET(User, false);
+	return galaxy::api::User()->IsLoggedOn();
+}
+
+void GDGalaxy::SignOut() {
+	GDGALAXY_REQUIRE_INTERFACE(User);
+	galaxy::api::User()->SignOut();
+}
+
 String GDGalaxy::GetCurrentGameLanguage(galaxy::api::ProductID product) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Apps, String());
 	const char* language = galaxy::api::Apps()->GetCurrentGameLanguage();
 	return String(language);
 }
 
 String GDGalaxy::GetCurrentGameLanguageCode(galaxy::api::ProductID product) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Apps, String());
 	const char* language = galaxy::api::Apps()->GetCurrentGameLanguageCode();
 	return String(language);
 }
 
 bool GDGalaxy::IsDlcInstalled(galaxy::api::ProductID product) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Apps, false);
 	return galaxy::api::Apps()->IsDlcInstalled(product);
 }
 
@@ -75,26 +97,32 @@ void GDGalaxy::IsDlcOwned(galaxy::api::ProductID product) {
 }
 
 void GDGalaxy::RequestUserStatsAndAchievements() {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestUserStatsAndAchievements(galaxy::api::GalaxyID(), this);
 }
 
 int32_t GDGalaxy::GetStatInt(String name) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, -1);
 	return galaxy::api::Stats()->GetStatInt(name.utf8());
 }
 
 float GDGalaxy::GetStatFloat(String name) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, -1);
 	return galaxy::api::Stats()->GetStatFloat(name.utf8());
 }
 
 void GDGalaxy::SetStatInt(String name, int32_t value) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->SetStatInt(name.utf8(), value);
 }
 
 void GDGalaxy::SetStatFloat(String name, float value) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->SetStatFloat(name.utf8(), value);
 }
 
 void GDGalaxy::UpdateAvgRateStat(String name, float countThisSession, double sessionLength) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->UpdateAvgRateStat(name.utf8(), countThisSession, sessionLength);
 }
 
@@ -102,7 +130,10 @@ Dictionary GDGalaxy::GetAchievement(String name) {
 	Dictionary achievement;
 	bool isUnlocked = false;
 	uint32_t unlockTime = 0;
-
+	achievement["success"] = false;
+	achievement["isUnlocked"] = false;
+	achievement["unlockTime"] = false;
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, achievement);
 	galaxy::api::Stats()->GetAchievement(name.utf8(), isUnlocked, unlockTime);
 
 	if (galaxy::api::GetError()) {
@@ -117,40 +148,49 @@ Dictionary GDGalaxy::GetAchievement(String name) {
 }
 
 void GDGalaxy::SetAchievement(String name) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->SetAchievement(name.utf8());
 }
 
 void GDGalaxy::ClearAchievement(String name) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->ClearAchievement(name.utf8());
 }
 
 void GDGalaxy::StoreStatsAndAchievements() {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->StoreStatsAndAchievements(this);
 }
 
 void GDGalaxy::ResetStatsAndAchievements(){
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->ResetStatsAndAchievements(this);
 }
 
 String GDGalaxy::GetAchievementDisplayName(String name){
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, String());
 	const char* displayName = galaxy::api::Stats()-> GetAchievementDisplayName(name.utf8());
 	return String(displayName);
 }
 
 String GDGalaxy::GetAchievementDescription(String name){
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, String());
 	const char* description = galaxy::api::Stats()-> GetAchievementDescription(name.utf8());
 	return String(description);
 }
 
 bool GDGalaxy::IsAchievementVisible(String name){
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, false);
 	return galaxy::api::Stats()->IsAchievementVisible(name.utf8());
 }
 
 bool GDGalaxy::IsAchievementVisibleWhileLocked(String name){
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, false);
 	return galaxy::api::Stats()->IsAchievementVisibleWhileLocked(name.utf8());
 }
 
 void GDGalaxy::RequestLeaderboards(){
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestLeaderboards(this);
 	if (galaxy::api::GetError()) {
 		UtilityFunctions::printerr(galaxy::api::GetError()->GetMsg());
@@ -158,27 +198,33 @@ void GDGalaxy::RequestLeaderboards(){
 }
 
 String GDGalaxy::GetLeaderboardDisplayName(String name) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, String());
 	const char* displayName = galaxy::api::Stats()->GetLeaderboardDisplayName(name.utf8());
 	return String(displayName);
 }
 
 uint8_t GDGalaxy::GetLeaderboardSortMethod(String name) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, galaxy::api::LEADERBOARD_SORT_METHOD_NONE);
 	return galaxy::api::Stats()->GetLeaderboardSortMethod(name.utf8());
 }
 
 uint8_t GDGalaxy::GetLeaderboardDisplayType(String name) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, galaxy::api::LEADERBOARD_DISPLAY_TYPE_NONE);
 	return galaxy::api::Stats()->GetLeaderboardDisplayType(name.utf8());
 }
 
 void GDGalaxy::RequestLeaderboardEntriesGlobal(String name, uint32_t rangeStart, uint32_t rangeEnd) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestLeaderboardEntriesGlobal(name.utf8(), rangeStart, rangeEnd, this);
 }
 
 void GDGalaxy::RequestLeaderboardEntriesArroundUser(String name, uint32_t countBefore, uint32_t countAfter, int64_t userId) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestLeaderboardEntriesAroundUser(name.utf8(), countBefore, countAfter, galaxy::api::GalaxyID(userId), this);
 }
 
 void GDGalaxy::RequestLeaderboardEntriesForUsers(String name, const PackedInt64Array userIds) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	std::vector<galaxy::api::GalaxyID> ids;
 	ids.reserve(userIds.size());
 	for (int i = 0; i < userIds.size(); i++) {
@@ -228,10 +274,12 @@ Dictionary GDGalaxy::GetRequestedLeaderboardEntryWithDetails(uint32_t index) {
 }
 
 void GDGalaxy::SetLeaderboardScore(String name, int32_t score, bool forceUpdate) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->SetLeaderboardScore(name.utf8(), score, forceUpdate, this);
 }
 
 void GDGalaxy::SetLeaderboardScoreWithDetails(String name, int32_t score, PackedByteArray details, bool forceUpdate){
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->SetLeaderboardScoreWithDetails(name.utf8(), score, (void*)details.ptr(), details.size(), forceUpdate, this);
 }
 
@@ -240,20 +288,24 @@ uint32_t GDGalaxy::GetLeaderboardEntryCount(String name){
 }
 
 void GDGalaxy::FindLeaderboard(String name) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->FindLeaderboard(name.utf8(), this);
 }
 
 void GDGalaxy::FindOrCreateLeaderboard(String name, String displayName, uint8_t sortMethod, uint8_t displayType) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::LeaderboardSortMethod leaderboardSortMethod = static_cast<galaxy::api::LeaderboardSortMethod>(sortMethod);
 	galaxy::api::LeaderboardDisplayType leaderboardDisplayType = static_cast<galaxy::api::LeaderboardDisplayType>(sortMethod);
 	galaxy::api::Stats()->FindOrCreateLeaderboard(name.utf8(), displayName.utf8(), leaderboardSortMethod, leaderboardDisplayType, this);
 }
 
 void GDGalaxy::RequestUserTimePlayed(int64_t userID) {
+	GDGALAXY_REQUIRE_INTERFACE(Stats);
 	galaxy::api::Stats()->RequestUserTimePlayed(galaxy::api::GalaxyID(userID), this);
 }
 
 uint32_t GDGalaxy::GetUserTimePlayed(int64_t userID) {
+	GDGALAXY_REQUIRE_INTERFACE_RET(Stats, 0);
 	return galaxy::api::Stats()->GetUserTimePlayed(galaxy::api::GalaxyID(userID));
 }
 
@@ -342,6 +394,9 @@ void GDGalaxy::_bind_methods() {
 
     // galaxy::api::User
 	ClassDB::bind_method(D_METHOD("SignInGalaxy"), &GDGalaxy::SignInGalaxy);
+	ClassDB::bind_method(D_METHOD("SignedIn"), &GDGalaxy::SignedIn);
+	ClassDB::bind_method(D_METHOD("SignedOut"), &GDGalaxy::SignOut);
+	ClassDB::bind_method(D_METHOD("IsLoggedOn"), &GDGalaxy::IsLoggedOn);
 
     // galaxy::api::Apps
 	ClassDB::bind_method(D_METHOD("GetCurrentGameLanguage", "product_id"), &GDGalaxy::GetCurrentGameLanguage, DEFVAL(0));

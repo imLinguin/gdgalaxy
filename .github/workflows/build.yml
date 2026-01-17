@@ -34,6 +34,7 @@ jobs:
         run: pip install scons
 
       - name: Get godot-cpp hash
+        shell: bash
         id: godotcpp-hash
         run: echo "hash=$(git submodule | awk '/godot-cpp/ { print $1 }')" >> $GITHUB_OUTPUT
 

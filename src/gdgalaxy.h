@@ -1,9 +1,23 @@
 #pragma once
 
 #include <galaxy/GalaxyApi.h>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/object.hpp>
 
 #include "register_settings.h"
+
+#define GDGALAXY_REQUIRE_INTERFACE(iface) \
+  if (!galaxy::api::iface()) {                           \
+    UtilityFunctions::printerr("%s is not available, did Init fail?", #iface); \
+    return;                               \
+  }
+
+#define GDGALAXY_REQUIRE_INTERFACE_RET(iface, retval) \
+  if (!galaxy::api::iface()) {                           \
+    UtilityFunctions::printerr("%s is not available, did Init fail?", #iface); \
+    return (retval);                               \
+  }
+
 
 namespace godot {
 
@@ -34,11 +48,14 @@ public:
   GDGalaxy(const GDGalaxy &) = delete;
 
   // galaxy::api
-  void Init();
+  bool Init();
   void ProcessData();
   void Shutdown();
 
   // galaxy::api::User
+  bool SignedIn();
+  void SignOut();
+  bool IsLoggedOn();
   void SignInGalaxy();
 
   // galaxy::api::Apps
@@ -81,7 +98,7 @@ public:
   void FindOrCreateLeaderboard(String name, String displayName, uint8_t sortMethod, uint8_t displayType);
   void RequestUserTimePlayed(int64_t userID = 0);
   uint32_t GetUserTimePlayed(int64_t userID = 0);
-
+  
   // galaxy::api::IAuthListener
   void OnAuthSuccess() override;
   void OnAuthFailure(galaxy::api::IAuthListener::FailureReason reason) override;
