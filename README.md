@@ -7,7 +7,7 @@ This enables usage of GOG Galaxy SDK in Godot games without need to recompile th
 
 ## Usage
 
-Supported Godot version: 4.1+  
+Supported Godot version: 4.3+  
 GOG SDK overview: https://docs.gog.com/sdk/  
 Detailed SDK documentation: https://docs.gog.com/galaxyapi/  
 

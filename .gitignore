@@ -6,3 +6,4 @@
 *.os
 .godot
 bin
+src/gen

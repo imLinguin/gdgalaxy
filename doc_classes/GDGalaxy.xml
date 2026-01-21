@@ -32,18 +32,22 @@
 			<return type="Dictionary" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Retruns a dictionary containing: `success` `isUnlocked` and `unlockTime`
+				Call RequestUserStatsAndAchievements first for this to work.
 			</description>
 		</method>
 		<method name="GetAchievementDescription">
 			<return type="String" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Call RequestUserStatsAndAchievements first for this to work.
 			</description>
 		</method>
 		<method name="GetAchievementDisplayName">
 			<return type="String" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Call RequestUserStatsAndAchievements first for this to work.
 			</description>
 		</method>
 		<method name="GetCurrentGameLanguage">
@@ -108,12 +112,14 @@
 			<return type="float" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Call RequestUserStatsAndAchievements first for this to work.
 			</description>
 		</method>
 		<method name="GetStatInt">
 			<return type="int" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Call RequestUserStatsAndAchievements first for this to work.
 			</description>
 		</method>
 		<method name="GetUserTimePlayed">
@@ -125,12 +131,17 @@
 		<method name="Init">
 			<return type="bool" />
 			<description>
+				Call this before running any queries to GOG.
+				Returns true if successful, false if init failed.
+				If Init failed, some SDK functions are inacessible.
 			</description>
 		</method>
 		<method name="IsAchievementVisible">
 			<return type="bool" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Returns if given achievement is visible.
+				Call RequestUserStatsAndAchievements first for this to work.
 			</description>
 		</method>
 		<method name="IsAchievementVisibleWhileLocked">
@@ -143,6 +154,7 @@
 			<return type="bool" />
 			<param index="0" name="product_id" type="int" />
 			<description>
+				Check whether given DLC is installed with the game
 			</description>
 		</method>
 		<method name="IsLoggedOn">
@@ -153,6 +165,7 @@
 		<method name="ProcessData">
 			<return type="void" />
 			<description>
+				Call this every frame. This is an equivalent to Steam's callbacks processing
 			</description>
 		</method>
 		<method name="RequestLeaderboardEntriesArroundUser">
@@ -187,6 +200,7 @@
 		<method name="RequestUserStatsAndAchievements">
 			<return type="void" />
 			<description>
+				After signing in you should call this to retrieve information about achievements and statistics.
 			</description>
 		</method>
 		<method name="RequestUserTimePlayed">
@@ -239,21 +253,25 @@
 		<method name="SignInGalaxy">
 			<return type="void" />
 			<description>
+				Starts a connection with GOG Galaxy. Make sure to call Init() first and provide clientId and clientSecret in project settings
+			</description>
+		</method>
+		<method name="SignOut">
+			<return type="void" />
+			<description>
+				Sign out from the SDK
 			</description>
 		</method>
 		<method name="SignedIn">
 			<return type="bool" />
 			<description>
-			</description>
-		</method>
-		<method name="SignedOut">
-			<return type="void" />
-			<description>
+				Returns true if successfully SignedIn into the SDK
 			</description>
 		</method>
 		<method name="StoreStatsAndAchievements">
 			<return type="void" />
 			<description>
+				Call this to commit any changes you made to achievements and stats.
 			</description>
 		</method>
 		<method name="UpdateAvgRateStat">

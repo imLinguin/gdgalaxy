@@ -418,7 +418,7 @@ void GDGalaxy::_bind_methods() {
     // galaxy::api::User
 	ClassDB::bind_method(D_METHOD("SignInGalaxy"), &GDGalaxy::SignInGalaxy);
 	ClassDB::bind_method(D_METHOD("SignedIn"), &GDGalaxy::SignedIn);
-	ClassDB::bind_method(D_METHOD("SignedOut"), &GDGalaxy::SignOut);
+	ClassDB::bind_method(D_METHOD("SignOut"), &GDGalaxy::SignOut);
 	ClassDB::bind_method(D_METHOD("IsLoggedOn"), &GDGalaxy::IsLoggedOn);
 	ClassDB::bind_method(D_METHOD("GetGalaxyID"), &GDGalaxy::GetGalaxyID);
 
