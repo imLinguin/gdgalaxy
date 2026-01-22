@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="GDGalaxy" inherits="Object" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		GOG Galaxy SDK integration for Godot.
 	</brief_description>
 	<description>
+		GDGalaxy provides integration with the GOG Galaxy SDK, allowing games to use GOG Galaxy features such as achievements, statistics, leaderboards, DLC management, and user authentication.
+
+		Before using any SDK features, you must call [method Init] to initialize the Galaxy SDK. Make sure to call [method ProcessData] every frame to process callbacks from the SDK.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,12 +15,18 @@
 			<return type="void" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Clears an achievement. This marks it as locked again.
+				In order to make this change persistent, call [method StoreStatsAndAchievements].
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="FindLeaderboard">
 			<return type="void" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Performs a request for the definition of a specific leaderboard. This is an asynchronous call.
+				Responses come to the [signal on_leaderboard_retrieve_success] or [signal on_leaderboard_retrieve_failure] signals.
+				After retrieving the definition, you can read metadata with [method GetLeaderboardDisplayName], [method GetLeaderboardSortMethod], or [method GetLeaderboardDisplayType].
 			</description>
 		</method>
 		<method name="FindOrCreateLeaderboard">
@@ -26,106 +36,148 @@
 			<param index="2" name="sortMethod" type="int" />
 			<param index="3" name="displayType" type="int" />
 			<description>
+				Performs a request for the definition of a specific leaderboard, or creates it if it doesn't exist. This is an asynchronous call.
+				The [code]sortMethod[/code] parameter should be one of [enum LeaderboardSortMethod] values.
+				The [code]displayType[/code] parameter should be one of [enum LeaderboardDisplayType] values.
+				Responses come to the [signal on_leaderboard_retrieve_success] or [signal on_leaderboard_retrieve_failure] signals.
 			</description>
 		</method>
 		<method name="GetAchievement">
 			<return type="Dictionary" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Retruns a dictionary containing: `success` `isUnlocked` and `unlockTime`
-				Call RequestUserStatsAndAchievements first for this to work.
+				Reads the state of a specified achievement.
+				Returns a dictionary containing:
+				- [code]success[/code]: Boolean indicating if the operation was successful
+				- [code]isUnlocked[/code]: Boolean indicating whether the achievement has been unlocked
+				- [code]unlockTime[/code]: Unix timestamp of when the achievement was unlocked (0 if not unlocked)
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="GetAchievementDescription">
 			<return type="String" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Call RequestUserStatsAndAchievements first for this to work.
+				Returns the description of the specified achievement.
+				The description provides details about what the player needs to do to unlock the achievement.
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="GetAchievementDisplayName">
 			<return type="String" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Call RequestUserStatsAndAchievements first for this to work.
+				Returns the display name of the specified achievement.
+				The display name is the human-readable title shown to players, as configured in the GOG Galaxy Developer Portal.
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="GetCurrentGameLanguage">
 			<return type="String" />
 			<param index="0" name="product_id" type="int" default="0" />
 			<description>
+				Returns the current game language for the given product ID.
+				Language name is returned in lowercase, e.g., "english", "polish".
+				The [code]product_id[/code] parameter is the ID of the game or DLC to check. Zero (default) means the base game itself.
 			</description>
 		</method>
 		<method name="GetCurrentGameLanguageCode">
 			<return type="String" />
 			<param index="0" name="product_id" type="int" default="0" />
 			<description>
+				Returns the current game language code for the given product ID.
+				Language code consists of ISO-639 language code and ISO-3166 country code, e.g., "en-US", "pl-PL".
+				The [code]product_id[/code] parameter is the ID of the game or DLC to check. Zero (default) means the base game itself.
 			</description>
 		</method>
 		<method name="GetError">
 			<return type="Dictionary" />
 			<description>
+				Returns information about the last error that occurred in the SDK.
+				The returned dictionary contains error details including error type and message.
 			</description>
 		</method>
 		<method name="GetGalaxyID">
 			<return type="int" />
 			<description>
+				Returns the Galaxy ID of the currently signed-in user.
+				This method only works if the user is successfully signed in via [method SignInGalaxy].
 			</description>
 		</method>
 		<method name="GetLeaderboardDisplayName">
 			<return type="String" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Returns the display name of the specified leaderboard.
+				Retrieve the leaderboard definition first by calling [method FindLeaderboard], [method FindOrCreateLeaderboard], or [method RequestLeaderboards].
 			</description>
 		</method>
 		<method name="GetLeaderboardDisplayType">
 			<return type="int" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Returns the display type of the specified leaderboard as a [enum LeaderboardDisplayType] value.
+				Retrieve the leaderboard definition first by calling [method FindLeaderboard], [method FindOrCreateLeaderboard], or [method RequestLeaderboards].
 			</description>
 		</method>
 		<method name="GetLeaderboardEntryCount">
 			<return type="int" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Returns the number of entries retrieved for the specified leaderboard.
+				Call one of the RequestLeaderboardEntries methods first to retrieve entries.
 			</description>
 		</method>
 		<method name="GetLeaderboardSortMethod">
 			<return type="int" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Returns the sort method of the specified leaderboard as a [enum LeaderboardSortMethod] value.
+				Retrieve the leaderboard definition first by calling [method FindLeaderboard], [method FindOrCreateLeaderboard], or [method RequestLeaderboards].
 			</description>
 		</method>
 		<method name="GetRequestedLeaderboardEntry">
 			<return type="Dictionary" />
 			<param index="0" name="index" type="int" />
 			<description>
+				Returns a leaderboard entry at the specified index from the most recently retrieved leaderboard entries.
+				The index is in the range [0, entry count). Use [method GetLeaderboardEntryCount] to get the number of available entries.
+				Call one of the RequestLeaderboardEntries methods first to retrieve entries.
 			</description>
 		</method>
 		<method name="GetRequestedLeaderboardEntryWithDetails">
 			<return type="Dictionary" />
 			<param index="0" name="index" type="int" />
 			<description>
+				Returns a leaderboard entry with additional details at the specified index from the most recently retrieved leaderboard entries.
+				The details include any extra data that was attached to the score when it was set using [method SetLeaderboardScoreWithDetails].
+				The index is in the range [0, entry count). Use [method GetLeaderboardEntryCount] to get the number of available entries.
 			</description>
 		</method>
 		<method name="GetStatFloat">
 			<return type="float" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Call RequestUserStatsAndAchievements first for this to work.
+				Reads the floating point value of a statistic for the current user.
+				The [code]name[/code] parameter is the code name of the statistic.
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="GetStatInt">
 			<return type="int" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Call RequestUserStatsAndAchievements first for this to work.
+				Reads the integer value of a statistic for the current user.
+				The [code]name[/code] parameter is the code name of the statistic.
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="GetUserTimePlayed">
 			<return type="int" />
 			<param index="0" name="userID" type="int" />
 			<description>
+				Returns the time played (in seconds) for the specified user.
+				Call [method RequestUserTimePlayed] first to retrieve this information.
 			</description>
 		</method>
 		<method name="Init">
@@ -140,26 +192,43 @@
 			<return type="bool" />
 			<param index="0" name="name" type="String" />
 			<description>
-				Returns if given achievement is visible.
-				Call RequestUserStatsAndAchievements first for this to work.
+				Returns whether the specified achievement is visible to the user.
+				Some achievements can be configured as hidden until certain conditions are met.
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="IsAchievementVisibleWhileLocked">
 			<return type="bool" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Returns whether the specified achievement is visible before it's unlocked.
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="IsDlcInstalled">
 			<return type="bool" />
 			<param index="0" name="product_id" type="int" />
 			<description>
-				Check whether given DLC is installed with the game
+				Checks if the specified DLC is installed.
+				The [code]product_id[/code] parameter is the Product ID of the DLC to check.
+				Returns [code]true[/code] if the DLC is installed, [code]false[/code] otherwise.
+			</description>
+		</method>
+		<method name="IsDlcOwned">
+			<return type="void" />
+			<param index="0" name="product_id" type="int" />
+			<description>
+				Check if user has license for specified DLC. This is an asynchronious call.
+				The [code]product_id[/code] parameter is the Product ID of the DLC to check.
+				Responses come to the [signal on_dlc_check_success] or [signal on_dlc_check_failure] signals.
 			</description>
 		</method>
 		<method name="IsLoggedOn">
 			<return type="bool" />
 			<description>
+				Checks if the user is logged on to Galaxy backend services.
+				Only a user that has been successfully signed in within Galaxy Service can be logged on to Galaxy backend services.
+				A user that is logged on is also signed in, and a user that is not signed in is also not logged on.
 			</description>
 		</method>
 		<method name="ProcessData">
@@ -175,6 +244,11 @@
 			<param index="2" name="countAfter" type="int" />
 			<param index="3" name="userId" type="int" default="0" />
 			<description>
+				Performs a request for leaderboard entries for and near the specified user. This is an asynchronous call.
+				The [code]countBefore[/code] and [code]countAfter[/code] parameters are treated as hints. If the requested range would go beyond the set of all leaderboard entries, it is shifted to fit while preserving its size if possible.
+				The [code]userId[/code] parameter can be omitted (0) to request for the current user.
+				This call will fail if there is no entry for the specified user in the leaderboard.
+				Responses come to the [signal on_leaderboard_entries_retrieve_success] or [signal on_leaderboard_entries_retrieve_failure] signals.
 			</description>
 		</method>
 		<method name="RequestLeaderboardEntriesForUsers">
@@ -182,6 +256,9 @@
 			<param index="0" name="name" type="String" />
 			<param index="1" name="userIds" type="int[]" />
 			<description>
+				Performs a request for leaderboard entries for specific users. This is an asynchronous call.
+				The [code]userIds[/code] parameter is an array of Galaxy user IDs for which to retrieve entries.
+				Responses come to the [signal on_leaderboard_entries_retrieve_success] or [signal on_leaderboard_entries_retrieve_failure] signals.
 			</description>
 		</method>
 		<method name="RequestLeaderboardEntriesGlobal">
@@ -190,28 +267,52 @@
 			<param index="1" name="rangeStart" type="int" />
 			<param index="2" name="rangeEnd" type="int" />
 			<description>
+				Performs a request for leaderboard entries in a global scope, without focusing on specific users. This is an asynchronous call.
+				The entries are indexed from 0. The [code]rangeStart[/code] parameter is the index of the first entry to retrieve, and [code]rangeEnd[/code] is the index of the last entry to retrieve (inclusive).
+				Responses come to the [signal on_leaderboard_entries_retrieve_success] or [signal on_leaderboard_entries_retrieve_failure] signals.
+				After successful retrieval, use [method GetRequestedLeaderboardEntry] to read individual entries.
 			</description>
 		</method>
 		<method name="RequestLeaderboards">
 			<return type="void" />
 			<description>
+				Performs a request for definitions of all leaderboards. This is an asynchronous call.
+				Responses come to the [signal on_leaderboards_retrieve_success] or [signal on_leaderboards_retrieve_failure] signals.
+				After successful retrieval, you can read metadata with [method GetLeaderboardDisplayName], [method GetLeaderboardSortMethod], or [method GetLeaderboardDisplayType].
 			</description>
 		</method>
 		<method name="RequestUserStatsAndAchievements">
 			<return type="void" />
 			<description>
-				After signing in you should call this to retrieve information about achievements and statistics.
+				Performs a request to retrieve statistics and achievements for the current user. This is an asynchronous call.
+				After signing in, you should call this method to retrieve information about achievements and statistics before using any Get/Set methods for stats and achievements.
+				Responses come to the [signal on_user_stats_and_achievements_retrieve_success] or [signal on_user_stats_and_achievements_retrieve_failure] signals.
 			</description>
 		</method>
 		<method name="RequestUserTimePlayed">
 			<return type="void" />
 			<param index="0" name="userID" type="int" />
 			<description>
+				Performs a request to retrieve the time played for a specific user. This is an asynchronous call.
+				Responses come to the [signal on_user_time_played_retrieve_success] or [signal on_user_time_played_retrieve_failure] signals.
+				After successful retrieval, use [method GetUserTimePlayed] to read the time played value.
 			</description>
 		</method>
 		<method name="ResetStatsAndAchievements">
 			<return type="void" />
 			<description>
+				Resets all statistics and achievements to their initial values. This is an asynchronous call.
+				This is equivalent to setting statistics and achievements to their initial values and calling [method StoreStatsAndAchievements].
+				Responses come to the [signal on_stats_and_achievements_store_success] or [signal on_stats_and_achievements_store_failure] signals.
+			</description>
+		</method>
+		<method name="SetAchievement">
+			<return type="void" />
+			<param index="0" name="name" type="String" />
+			<description>
+				Unlocks an achievement. The achievement is marked as unlocked at the time this method is called.
+				In order to make this change persistent, call [method StoreStatsAndAchievements].
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="SetLeaderboardScore">
@@ -220,6 +321,10 @@
 			<param index="1" name="score" type="int" />
 			<param index="2" name="forceUpdate" type="bool" default="false" />
 			<description>
+				Sets a score in the specified leaderboard. This is an asynchronous call.
+				If [code]forceUpdate[/code] is false, the score will only be updated if it's better than the previous score (according to the leaderboard's sort method).
+				If [code]forceUpdate[/code] is true, the score will always be updated regardless of whether it's an improvement.
+				Responses come to the [signal on_leaderboard_score_update_success] or [signal on_leaderboard_score_update_failure] signals.
 			</description>
 		</method>
 		<method name="SetLeaderboardScoreWithDetails">
@@ -229,6 +334,11 @@
 			<param index="2" name="details" type="PackedByteArray" />
 			<param index="3" name="forceUpdate" type="bool" default="false" />
 			<description>
+				Sets a score with additional details in the specified leaderboard. This is an asynchronous call.
+				The [code]details[/code] parameter can contain arbitrary binary data to attach to the score (e.g., replay data or metadata).
+				If [code]forceUpdate[/code] is false, the score will only be updated if it's better than the previous score.
+				If [code]forceUpdate[/code] is true, the score will always be updated regardless of whether it's an improvement.
+				Responses come to the [signal on_leaderboard_score_update_success] or [signal on_leaderboard_score_update_failure] signals.
 			</description>
 		</method>
 		<method name="SetStatFloat">
@@ -236,6 +346,9 @@
 			<param index="0" name="name" type="String" />
 			<param index="1" name="value" type="float" />
 			<description>
+				Updates a statistic with a floating point value.
+				In order to make this change persistent, call [method StoreStatsAndAchievements].
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="SetStatInt">
@@ -243,11 +356,17 @@
 			<param index="0" name="name" type="String" />
 			<param index="1" name="value" type="int" />
 			<description>
+				Updates a statistic with an integer value.
+				In order to make this change persistent, call [method StoreStatsAndAchievements].
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 		<method name="Shutdown">
 			<return type="void" />
 			<description>
+				Shuts down the Galaxy SDK and releases all resources.
+				Call this when your game is closing or when you no longer need the SDK.
+				All pending asynchronous operations will be finished immediately.
 			</description>
 		</method>
 		<method name="SignInGalaxy">
@@ -271,7 +390,10 @@
 		<method name="StoreStatsAndAchievements">
 			<return type="void" />
 			<description>
-				Call this to commit any changes you made to achievements and stats.
+				Persists all changes to statistics and achievements to the backend. This is an asynchronous call.
+				After modifying statistics with [method SetStatInt] or [method SetStatFloat], or unlocking achievements with [method SetAchievement], call this method to save changes.
+				Responses come to the [signal on_stats_and_achievements_store_success] or [signal on_stats_and_achievements_store_failure] signals.
+				Notifications about unlocking achievements come to the achievement change listeners.
 			</description>
 		</method>
 		<method name="UpdateAvgRateStat">
@@ -280,6 +402,11 @@
 			<param index="1" name="countThisSession" type="float" />
 			<param index="2" name="sessionLength" type="float" />
 			<description>
+				Updates an average-rate statistic with a delta.
+				The [code]countThisSession[/code] parameter is the delta of the count, and [code]sessionLength[/code] is the delta of the session time.
+				This is useful for tracking rates like "kills per hour" or "distance per minute".
+				In order to make this change persistent, call [method StoreStatsAndAchievements].
+				Call [method RequestUserStatsAndAchievements] first for this to work.
 			</description>
 		</method>
 	</methods>
@@ -287,49 +414,74 @@
 		<signal name="on_auth_failure">
 			<param index="0" name="reason" type="int" />
 			<description>
+				Emitted when authentication fails. The [code]reason[/code] parameter is one of [enum AuthFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_auth_lost">
 			<description>
+				Emitted when authentication is lost after successfully signing in.
+				This can occur due to networking issues or limited availability of Galaxy backend services.
+				You will need to sign in again for the SDK to operate properly.
 			</description>
 		</signal>
 		<signal name="on_auth_success">
 			<description>
+				Emitted when authentication is successful.
+				After this signal, you can use SDK features that require authentication.
 			</description>
 		</signal>
 		<signal name="on_dlc_check_failure">
 			<param index="0" name="productId" type="int" />
 			<param index="1" name="reason" type="int" />
 			<description>
+				Emitted when checking DLC ownership fails.
+				The [code]productId[/code] parameter is the Product ID of the DLC that was queried.
+				The [code]reason[/code] parameter is one of [enum IsDlcOwnedFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_dlc_check_success">
 			<param index="0" name="productId" type="int" />
 			<param index="1" name="isOwned" type="bool" />
 			<description>
+				Emitted when DLC ownership check succeeds.
+				The [code]productId[/code] parameter is the Product ID of the DLC that was queried.
+				The [code]isOwned[/code] parameter indicates whether the user owns the DLC.
 			</description>
 		</signal>
 		<signal name="on_leaderboard_entries_retrieve_failure">
 			<param index="0" name="name" type="String" />
 			<param index="1" name="reason" type="int" />
 			<description>
+				Emitted when retrieving leaderboard entries fails.
+				The [code]name[/code] parameter is the name of the leaderboard.
+				The [code]reason[/code] parameter is one of [enum LeaderboardEntriesRetrieveFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_leaderboard_entries_retrieve_success">
 			<param index="0" name="name" type="String" />
 			<param index="1" name="entriesCount" type="int" />
 			<description>
+				Emitted when leaderboard entries are successfully retrieved.
+				The [code]name[/code] parameter is the name of the leaderboard.
+				The [code]entriesCount[/code] parameter is the number of entries that were retrieved.
+				Use [method GetRequestedLeaderboardEntry] to read individual entries.
 			</description>
 		</signal>
 		<signal name="on_leaderboard_retrieve_failure">
 			<param index="0" name="name" type="String" />
 			<param index="1" name="reason" type="int" />
 			<description>
+				Emitted when retrieving a leaderboard definition fails.
+				The [code]name[/code] parameter is the name of the leaderboard.
+				The [code]reason[/code] parameter indicates the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_leaderboard_retrieve_success">
 			<param index="0" name="name" type="String" />
 			<description>
+				Emitted when a leaderboard definition is successfully retrieved.
+				The [code]name[/code] parameter is the name of the leaderboard.
+				You can now read metadata with [method GetLeaderboardDisplayName], [method GetLeaderboardSortMethod], or [method GetLeaderboardDisplayType].
 			</description>
 		</signal>
 		<signal name="on_leaderboard_score_update_failure">
@@ -337,6 +489,10 @@
 			<param index="1" name="score" type="int" />
 			<param index="2" name="reason" type="int" />
 			<description>
+				Emitted when setting a leaderboard score fails.
+				The [code]name[/code] parameter is the name of the leaderboard.
+				The [code]score[/code] parameter is the score that was attempted to set.
+				The [code]reason[/code] parameter is one of [enum LeaderboardScoreUpdateFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_leaderboard_score_update_success">
@@ -345,111 +501,167 @@
 			<param index="2" name="oldRank" type="int" />
 			<param index="3" name="newRank" type="int" />
 			<description>
+				Emitted when a leaderboard score is successfully updated.
+				The [code]name[/code] parameter is the name of the leaderboard.
+				The [code]score[/code] parameter is the score after the update.
+				The [code]oldRank[/code] parameter is the previous rank (0 if the user had no entry yet).
+				The [code]newRank[/code] parameter is the current rank after the update.
 			</description>
 		</signal>
 		<signal name="on_leaderboards_retrieve_failure">
 			<param index="0" name="reason" type="int" />
 			<description>
+				Emitted when retrieving all leaderboard definitions fails.
+				The [code]reason[/code] parameter is one of [enum LeaderboardsRetrieveFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_leaderboards_retrieve_success">
 			<description>
+				Emitted when all leaderboard definitions are successfully retrieved.
+				You can now read metadata for any leaderboard with [method GetLeaderboardDisplayName], [method GetLeaderboardSortMethod], or [method GetLeaderboardDisplayType].
 			</description>
 		</signal>
 		<signal name="on_stats_and_achievements_store_failure">
 			<param index="0" name="reason" type="int" />
 			<description>
+				Emitted when storing statistics and achievements fails.
+				The [code]reason[/code] parameter is one of [enum StatsAndAchievementsStoreFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_stats_and_achievements_store_success">
 			<description>
+				Emitted when statistics and achievements are successfully stored.
+				All local changes to statistics and achievements have been persisted to the backend.
 			</description>
 		</signal>
 		<signal name="on_user_stats_and_achievements_retrieve_failure">
 			<param index="0" name="userID" type="int" />
 			<param index="1" name="reason" type="int" />
 			<description>
+				Emitted when retrieving user statistics and achievements fails.
+				The [code]userID[/code] parameter is the Galaxy ID of the user.
+				The [code]reason[/code] parameter is one of [enum UserStatsAndAchievementsRetrieveFailureReason] values indicating the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_user_stats_and_achievements_retrieve_success">
 			<param index="0" name="userID" type="int" />
 			<description>
+				Emitted when user statistics and achievements are successfully retrieved.
+				The [code]userID[/code] parameter is the Galaxy ID of the user.
+				You can now read statistics with [method GetStatInt] or [method GetStatFloat], and achievements with [method GetAchievement].
 			</description>
 		</signal>
 		<signal name="on_user_time_played_retrieve_failure">
 			<param index="0" name="userID" type="int" />
 			<param index="1" name="reason" type="int" />
 			<description>
+				Emitted when retrieving user time played fails.
+				The [code]userID[/code] parameter is the Galaxy ID of the user.
+				The [code]reason[/code] parameter indicates the cause of the failure.
 			</description>
 		</signal>
 		<signal name="on_user_time_played_retrieve_success">
 			<param index="0" name="userID" type="int" />
 			<description>
+				Emitted when user time played is successfully retrieved.
+				The [code]userID[/code] parameter is the Galaxy ID of the user.
+				Use [method GetUserTimePlayed] to read the time played value.
 			</description>
 		</signal>
 	</signals>
 	<constants>
 		<constant name="AUTH_FAILURE_REASON_UNDEFINED" value="0" enum="AuthFailureReason">
+			Undefined error occurred during authentication.
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_GALAXY_SERVICE_NOT_AVAILABLE" value="1" enum="AuthFailureReason">
+			Galaxy Service is not installed properly or fails to start.
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN" value="2" enum="AuthFailureReason">
+			Galaxy Service is not signed in properly.
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_CONNECTION_FAILURE" value="3" enum="AuthFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_NO_LICENSE" value="4" enum="AuthFailureReason">
+			User that is being signed in has no license for this application.
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_INVALID_CREDENTIALS" value="5" enum="AuthFailureReason">
+			Unable to match client credentials (ID, secret) or user credentials (username, password).
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_GALAXY_NOT_INITIALIZED" value="6" enum="AuthFailureReason">
+			Galaxy has not been initialized.
 		</constant>
 		<constant name="AUTH_FAILURE_REASON_EXTERNAL_SERVICE_FAILURE" value="7" enum="AuthFailureReason">
+			Unable to communicate with external service.
 		</constant>
 		<constant name="IS_DLC_OWNED_FAILURE_REASON_UNDEFINED" value="0" enum="IsDlcOwnedFailureReason">
+			Undefined error occurred while checking DLC ownership.
 		</constant>
 		<constant name="IS_DLC_OWNED_FAILURE_REASON_GALAXY_SERVICE_NOT_SIGNED_IN" value="1" enum="IsDlcOwnedFailureReason">
+			Galaxy Service is not signed in properly.
 		</constant>
 		<constant name="IS_DLC_OWNED_FAILURE_REASON_CONNECTION_FAILURE" value="2" enum="IsDlcOwnedFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="IS_DLC_OWNED_FAILURE_REASON_EXTERNAL_SERVICE_FAILURE" value="3" enum="IsDlcOwnedFailureReason">
+			Unable to communicate with external service.
 		</constant>
 		<constant name="ACHIEVEMENTS_RETRIEVE_FAILURE_REASON_UNDEFINED" value="0" enum="UserStatsAndAchievementsRetrieveFailureReason">
+			Unspecified error occurred while retrieving achievements and statistics.
 		</constant>
 		<constant name="ACHIEVEMENTS_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE" value="1" enum="UserStatsAndAchievementsRetrieveFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="ACHIEVEMENTS_STORE_FAILURE_REASON_UNDEFINED" value="0" enum="StatsAndAchievementsStoreFailureReason">
+			Unspecified error occurred while storing achievements and statistics.
 		</constant>
 		<constant name="ACHIEVEMENTS_STOREFAILURE_REASON_CONNECTION_FAILURE" value="1" enum="StatsAndAchievementsStoreFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="LEADERBOARDS_RETRIEVE_FAILURE_REASON_UNDEFINED" value="0" enum="LeaderboardsRetrieveFailureReason">
+			Unspecified error occurred while retrieving leaderboards.
 		</constant>
 		<constant name="LEADERBOARDS_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE" value="1" enum="LeaderboardsRetrieveFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="LEADERBOARD_RETRIEVE_FAILURE_REASON_UNDEFINED" value="0" enum="LeaderboardEntriesRetrieveFailureReason">
+			Unspecified error occurred while retrieving leaderboard entries.
 		</constant>
 		<constant name="LEADERBOARD_RETRIEVE_FAILURE_REASON_NOT_FOUND" value="1" enum="LeaderboardEntriesRetrieveFailureReason">
+			Could not find any entries for the specified search criteria.
 		</constant>
 		<constant name="LEADERBOARD_RETRIEVE_FAILURE_REASON_CONNECTION_FAILURE" value="2" enum="LeaderboardEntriesRetrieveFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_UNDEFINED" value="0" enum="LeaderboardScoreUpdateFailureReason">
+			Unspecified error occurred while updating leaderboard score.
 		</constant>
 		<constant name="LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_NO_IMPROVEMENT" value="1" enum="LeaderboardScoreUpdateFailureReason">
+			Previous score was better and the update operation was not forced.
 		</constant>
 		<constant name="LEADERBOARD_SCORE_UPDATE_FAILURE_REASON_CONNECTION_FAILURE" value="2" enum="LeaderboardScoreUpdateFailureReason">
+			Unable to communicate with backend services.
 		</constant>
 		<constant name="LEADERBOARD_SORT_METHOD_NONE" value="0" enum="LeaderboardSortMethod">
+			No sorting method specified.
 		</constant>
 		<constant name="LEADERBOARD_SORT_METHOD_ASCENDING" value="1" enum="LeaderboardSortMethod">
+			Top score is the lowest number (ascending order).
 		</constant>
 		<constant name="LEADERBOARD_SORT_METHOD_DESCENDING" value="2" enum="LeaderboardSortMethod">
+			Top score is the highest number (descending order).
 		</constant>
 		<constant name="LEADERBOARD_DISPLAY_TYPE_NONE" value="0" enum="LeaderboardDisplayType">
+			No display type specified.
 		</constant>
 		<constant name="LEADERBOARD_DISPLAY_TYPE_NUMBER" value="1" enum="LeaderboardDisplayType">
+			Simple numerical score.
 		</constant>
 		<constant name="LEADERBOARD_DISPLAY_TYPE_TIME_MILLISECONDS" value="3" enum="LeaderboardDisplayType">
+			The score represents time, in milliseconds.
 		</constant>
 		<constant name="LEADERBOARD_DISPLAY_TYPE_TIME_SECONDS" value="2" enum="LeaderboardDisplayType">
+			The score represents time, in seconds.
 		</constant>
 	</constants>
 </class>

@@ -426,6 +426,7 @@ void GDGalaxy::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("GetCurrentGameLanguage", "product_id"), &GDGalaxy::GetCurrentGameLanguage, DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("GetCurrentGameLanguageCode", "product_id"), &GDGalaxy::GetCurrentGameLanguageCode, DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("IsDlcInstalled", "product_id"), &GDGalaxy::IsDlcInstalled);
+	ClassDB::bind_method(D_METHOD("IsDlcOwned", "product_id"), &GDGalaxy::IsDlcOwned);
 
 	// galaxy::api::Stats
 	ClassDB::bind_method(D_METHOD("RequestUserStatsAndAchievements"), &GDGalaxy::RequestUserStatsAndAchievements);
@@ -435,6 +436,7 @@ void GDGalaxy::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("SetStatFloat", "name", "value"), &GDGalaxy::SetStatFloat);
 	ClassDB::bind_method(D_METHOD("UpdateAvgRateStat", "name", "countThisSession", "sessionLength"), &GDGalaxy::UpdateAvgRateStat);
 	ClassDB::bind_method(D_METHOD("GetAchievement", "name"), &GDGalaxy::GetAchievement);
+	ClassDB::bind_method(D_METHOD("SetAchievement", "name"), &GDGalaxy::SetAchievement);
 	ClassDB::bind_method(D_METHOD("ClearAchievement", "name"), &GDGalaxy::ClearAchievement);
 	ClassDB::bind_method(D_METHOD("StoreStatsAndAchievements"), &GDGalaxy::StoreStatsAndAchievements);
 	ClassDB::bind_method(D_METHOD("ResetStatsAndAchievements"), &GDGalaxy::ResetStatsAndAchievements);

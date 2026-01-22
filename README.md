@@ -1,7 +1,7 @@
 <p align="center"><img width="128" src="assets/icon.png" /></p>
 <h1 align="center">GDGalaxy</h1>
 <p align="center">
-GDExtension arround Galaxy SDK.<br/>
+GOG Galaxy SDK for Godot. (GDExtension)<br/>
 This enables usage of GOG Galaxy SDK in Godot games without need to recompile the engine.
 </p>
 
