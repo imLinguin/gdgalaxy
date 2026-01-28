@@ -11,15 +11,23 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            targets: x86_32 x86_64
+            target: x86_32
+            platform: linux
+            dir: linux
+          - os: ubuntu-latest
+            target: x86_64
             platform: linux
             dir: linux
           - os: macos-latest
-            targets: universal
+            target: universal
             platform: macos
             dir: osx
           - os: windows-latest
-            targets: x86_32 x86_64
+            target: x86_64
+            platform: windows
+            dir: win
+          - os: windows-latest
+            target: x86_32
             platform: windows
             dir: win
 
@@ -47,14 +55,13 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Compile builds
+      - name: Build debug
         shell: bash
-        run: |
-          for t in ${{matrix.targets}}; do
-            echo "Building $t"
-            scons --no-cache platform=${{matrix.platform}} "arch=$t" target=template_debug
-            scons --no-cache platform=${{matrix.platform}} "arch=$t" target=template_release
-          done
+        run: scons --no-cache platform=${{matrix.platform}} arch=${{matrix.target}} target=template_debug
+      
+      - name: Build release
+        shell: bash
+        run: scons --no-cache platform=${{matrix.platform}} arch=${{matrix.target}} target=template_release
 
       - name: Copy SDK binaries
         shell: bash
@@ -63,7 +70,7 @@ jobs:
       - name: Prepare artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gdgalaxy-${{matrix.platform}}
+          name: gdgalaxy-${{matrix.platform}}-${{matrix.target}}
           path: addons/gdgalaxy/${{matrix.dir}}*
 
   bundle:
@@ -76,16 +83,8 @@ jobs:
         uses: actions/checkout@v6
       - uses: actions/download-artifact@v6
         with:
-          name: gdgalaxy-linux
           path: addons/gdgalaxy
-      - uses: actions/download-artifact@v6
-        with:
-          name: gdgalaxy-macos
-          path: addons/gdgalaxy
-      - uses: actions/download-artifact@v6
-        with:
-          name: gdgalaxy-windows
-          path: addons/gdgalaxy
+          merge-multiple: true
       
       - name: Copy license and README
         run: cp LICENSE.md README.md addons/gdgalaxy
