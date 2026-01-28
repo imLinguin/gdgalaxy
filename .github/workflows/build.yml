@@ -32,6 +32,9 @@ jobs:
             dir: win
 
     runs-on: ${{matrix.os}}
+    env:
+      SCONS_CACHE: ${{github.workspace}}/.scons_cache
+      
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -55,13 +58,23 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Cache SCons build
+        uses: actions/cache@v5
+        with:
+          path: .scons_cache
+          key: scons-${{matrix.platform}}-${{matrix.target}}-${{steps.godotcpp-hash.outputs.hash}}-${{hashFiles('src/**')}}
+          restore-keys: |
+            scons-${{matrix.platform}}-${{matrix.target}}-${{steps.godotcpp-hash.outputs.hash}}-
+            scons-${{matrix.platform}}-${{matrix.target}}-
+
       - name: Build debug
         shell: bash
-        run: scons --no-cache platform=${{matrix.platform}} arch=${{matrix.target}} target=template_debug
+        run: scons platform=${{matrix.platform}} arch=${{matrix.target}} target=template_debug
       
       - name: Build release
         shell: bash
-        run: scons --no-cache platform=${{matrix.platform}} arch=${{matrix.target}} target=template_release
+        run: scons platform=${{matrix.platform}} arch=${{matrix.target}} target=template_release
 
       - name: Copy SDK binaries
         shell: bash

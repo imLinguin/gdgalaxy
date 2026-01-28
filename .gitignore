@@ -7,3 +7,5 @@
 .godot
 bin
 src/gen
+sdk
+.scons_cache
