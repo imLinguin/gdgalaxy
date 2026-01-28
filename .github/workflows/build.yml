@@ -52,8 +52,8 @@ jobs:
         run: |
           for t in ${{matrix.targets}}; do
             echo "Building $t"
-            scons platform=${{matrix.platform}} "arch=$t" target=template_debug
-            scons platform=${{matrix.platform}} "arch=$t" target=template_release
+            scons --no-cache platform=${{matrix.platform}} "arch=$t" target=template_debug
+            scons --no-cache platform=${{matrix.platform}} "arch=$t" target=template_release
           done
 
       - name: Copy SDK binaries
