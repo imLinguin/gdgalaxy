@@ -69,7 +69,7 @@ jobs:
 
       - name: Build
         shell: bash
-        run: scons platform=${{matrix.platform}} arch=${{matrix.arch}} target=template_debug
+        run: scons platform=${{matrix.platform}} arch=${{matrix.arch}} target=${{matrix.target}}
 
       - name: Copy SDK binaries
         shell: bash
