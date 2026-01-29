@@ -78,7 +78,7 @@ jobs:
       - name: Prepare artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gdgalaxy-${{matrix.platform}}-${{matrix.arch}}
+          name: gdgalaxy-${{matrix.platform}}-${{matrix.arch}}-${{matrix.target}}
           path: addons/gdgalaxy/${{matrix.dir}}*
 
   bundle:
