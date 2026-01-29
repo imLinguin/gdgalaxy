@@ -9,27 +9,26 @@ jobs:
   build:
     strategy:
       matrix:
+        target: [template_debug, template_release]
+        arch: [x86_32, x86_64]
+        os: [ubuntu-latest, windows-latest]
         include:
           - os: ubuntu-latest
-            target: x86_32
             platform: linux
             dir: linux
-          - os: ubuntu-latest
-            target: x86_64
-            platform: linux
-            dir: linux
+          - os: windows-latest
+            platform: windows
+            dir: win
           - os: macos-latest
-            target: universal
+            target: template_debug
+            arch: universal
             platform: macos
             dir: osx
-          - os: windows-latest
-            target: x86_64
-            platform: windows
-            dir: win
-          - os: windows-latest
-            target: x86_32
-            platform: windows
-            dir: win
+          - os: macos-latest
+            target: template_release
+            arch: universal
+            platform: macos
+            dir: osx
 
     runs-on: ${{matrix.os}}
     env:
@@ -63,18 +62,14 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .scons_cache
-          key: scons-${{matrix.platform}}-${{matrix.target}}-${{steps.godotcpp-hash.outputs.hash}}-${{hashFiles('src/**')}}
+          key: scons-${{matrix.platform}}-${{matrix.arch}}-${{matrix.target}}-${{steps.godotcpp-hash.outputs.hash}}-${{hashFiles('src/**')}}
           restore-keys: |
-            scons-${{matrix.platform}}-${{matrix.target}}-${{steps.godotcpp-hash.outputs.hash}}-
-            scons-${{matrix.platform}}-${{matrix.target}}-
+            scons-${{matrix.platform}}-${{matrix.arch}}-${{matrix.target}}-${{steps.godotcpp-hash.outputs.hash}}-
+            scons-${{matrix.platform}}-${{matrix.arch}}-${{matrix.target}}-
 
-      - name: Build debug
+      - name: Build
         shell: bash
-        run: scons platform=${{matrix.platform}} arch=${{matrix.target}} target=template_debug
-      
-      - name: Build release
-        shell: bash
-        run: scons platform=${{matrix.platform}} arch=${{matrix.target}} target=template_release
+        run: scons platform=${{matrix.platform}} arch=${{matrix.arch}} target=template_debug
 
       - name: Copy SDK binaries
         shell: bash
@@ -83,7 +78,7 @@ jobs:
       - name: Prepare artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gdgalaxy-${{matrix.platform}}-${{matrix.target}}
+          name: gdgalaxy-${{matrix.platform}}-${{matrix.arch}}
           path: addons/gdgalaxy/${{matrix.dir}}*
 
   bundle:
