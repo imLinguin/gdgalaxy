@@ -15,11 +15,15 @@ void initialize_galaxy_module(ModuleInitializationLevel p_level) {
 	if (p_level == MODULE_INITIALIZATION_LEVEL_CORE) {
 		GDREGISTER_CLASS(GDGalaxy);
     	Galaxy = memnew(GDGalaxy);
-	    GalaxyProjectSettings::register_settings();
 	}
 
-	else if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE)
+	else if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {
     	Engine::get_singleton()->register_singleton("GDGalaxy", GDGalaxy::get_singleton());
+	}
+
+	else if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
+	    GalaxyProjectSettings::register_settings();
+	}
 
 }
 
