@@ -12,23 +12,25 @@ using namespace godot;
 static GDGalaxy *Galaxy = nullptr;
 
 void initialize_galaxy_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_CORE) {
-		return;
+	if (p_level == MODULE_INITIALIZATION_LEVEL_CORE) {
+		GDREGISTER_CLASS(GDGalaxy);
+    	Galaxy = memnew(GDGalaxy);
+	    GalaxyProjectSettings::register_settings();
 	}
-	GDREGISTER_CLASS(GDGalaxy);
-    Galaxy = memnew(GDGalaxy);
-    Engine::get_singleton()->register_singleton("GDGalaxy", GDGalaxy::get_singleton());
 
-    GalaxyProjectSettings::register_settings();
+	else if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE)
+    	Engine::get_singleton()->register_singleton("GDGalaxy", GDGalaxy::get_singleton());
+
 }
 
 void uninitialize_galaxy_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_CORE) {
-		return;
+	if (p_level == MODULE_INITIALIZATION_LEVEL_CORE) {
+    	memdelete(Galaxy);
+		Galaxy = nullptr;
 	}
-    Engine::get_singleton()->unregister_singleton("GDGalaxy");
-    memdelete(Galaxy);
-	Galaxy = nullptr;
+
+	else if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE)
+    	Engine::get_singleton()->unregister_singleton("GDGalaxy");
 }
 
 extern "C" {
