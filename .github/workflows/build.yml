@@ -96,6 +96,10 @@ jobs:
       
       - name: Copy license and README
         run: cp LICENSE.md README.md addons/gdgalaxy
+
+      - name: Remove windows build files
+        continue-on-error: true
+        run: rm addons/gdgalaxy/win*/*.{exp,lib}
       
       - name: Upload artifact
         uses: actions/upload-artifact@v6
